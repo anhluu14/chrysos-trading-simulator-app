@@ -4,7 +4,7 @@ import React from "react";
 import Typography from "@/styles/typography";
 import { formatAmount } from "@/utils/formatters";
 import { LinearGradient } from "expo-linear-gradient";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { ColorValue, StyleSheet, Text, TextInput, View } from "react-native";
 import { useTheme } from "@/context/ThemeContext";
 import { getColors } from "@/styles/colors";
 
@@ -69,7 +69,7 @@ const PriceInput = ({
     }
   }, [value]);
 
-  const getGradientColors = () => {
+  const getGradientColors = (): readonly [ColorValue, ColorValue] => {
     if (theme === 'dark') {
       return isFocused
         ? ["rgba(102, 116, 204, 0.15)", "rgba(102, 116, 204, 0.08)"]

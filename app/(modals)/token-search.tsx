@@ -63,7 +63,7 @@ const TokenSearchScreen = () => {
     });
 
     // Navigate to token detail or buy screen
-    router.push(`/(modals)/token-detail?id=${token.id}`);
+    router.push({ pathname: "/(subs)/crypto-detail", params: { id: token.id } });
   };
 
   const TokenItem = ({ item, showMarketCap = false }: any) => (

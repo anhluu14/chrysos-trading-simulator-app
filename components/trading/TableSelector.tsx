@@ -3,7 +3,7 @@ import Dimensions from "@/styles/dimensions";
 import React from "react";
 import Typography from "@/styles/typography";
 import { LinearGradient } from "expo-linear-gradient";
-import { StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
+import { ColorValue, StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
 import { getColors } from "@/styles/colors";
@@ -18,7 +18,7 @@ const TabSelector = ({
   const { theme } = useTheme();
   const colors = getColors(theme);
 
-  const getBuyColors = () => {
+  const getBuyColors = (): readonly [ColorValue, ColorValue] => {
     if (selectedTab === "buy") {
       return [colors.action.buy, colors.action.buy];
     }
@@ -27,7 +27,7 @@ const TabSelector = ({
       : [colors.background.cardSecondary, colors.background.cardSecondary];
   };
 
-  const getSellColors = () => {
+  const getSellColors = (): readonly [ColorValue, ColorValue] => {
     if (selectedTab === "sell") {
       return [colors.action.sell, colors.action.sell];
     }

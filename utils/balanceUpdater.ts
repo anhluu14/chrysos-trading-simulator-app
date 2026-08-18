@@ -12,7 +12,8 @@ export async function updateDailyBalance() {
 
     // Create a copy of current balance to use as new balance
     const newBalance: UserBalance = {
-      totalInUSD: currentBalance.totalInUSD,
+      usdtBalance: currentBalance.usdtBalance,
+      totalPortfolioValue: currentBalance.totalPortfolioValue,
       holdings: { ...currentBalance.holdings },
     };
 

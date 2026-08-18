@@ -100,7 +100,7 @@ class SupabaseConfig {
   }
 }
 
-const initializeSupabase = (): SupabaseClient | null => {
+const initializeSupabase = (): SupabaseClient => {
   try {
     const config = SupabaseConfig.getConfig();
 
@@ -111,7 +111,11 @@ const initializeSupabase = (): SupabaseClient | null => {
 
     const supabase = createClient(config.url, config.key, {
       auth: {
-        storage: AsyncStorage,
+        storage: typeof window !== "undefined" ? AsyncStorage : {
+          getItem: () => Promise.resolve(null),
+          setItem: () => Promise.resolve(),
+          removeItem: () => Promise.resolve(),
+        },
         autoRefreshToken: true,
         persistSession: true,
         detectSessionInUrl: false,
@@ -138,7 +142,10 @@ const initializeSupabase = (): SupabaseClient | null => {
       "SupabaseService",
       error
     );
-    return null;
+    // Keep a usable client shape while offline. This lets the app's existing
+    // network error handling and local-first storage paths run instead of
+    // crashing at every call site when credentials have not been configured.
+    return createClient("https://offline.supabase.invalid", "offline-anon-key");
   }
 };
 
@@ -291,7 +298,10 @@ export class SyncService {
     baseDelay: 1000,
     maxDelay: 10000,
   };
-  private static portfolioSyncTimeouts: Map<string, NodeJS.Timeout> = new Map();
+  private static portfolioSyncTimeouts: Map<
+    string,
+    ReturnType<typeof setTimeout>
+  > = new Map();
   private static portfolioSyncCooldowns: Map<string, number> = new Map();
   private static readonly PORTFOLIO_SYNC_DEBOUNCE_MS = 5000;
   private static readonly PORTFOLIO_SYNC_COOLDOWN_MS = 10000;

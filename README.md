@@ -1,99 +1,109 @@
-# Crypto Trading Simulator
+# Chrysos
 
-A React Native application for **virtual cryptocurrency trading simulation** with real-time market data, portfolio management, and social learning features. **This app is for educational purposes only - no real money is involved.**
+**Chrysos** is a mobile-first cryptocurrency trading simulator built with Expo and React Native. It provides a risk-free space to explore market data, practise trades with virtual USDT, track a portfolio, and learn the fundamentals of crypto trading.
 
-## ⚠️ Important Notice
-
-**This is a simulation app for educational purposes only:**
-
-- No real money is involved in any transactions
-- All trading activities use virtual currency
-- Real market prices are used for educational realism only
-- No actual cryptocurrency is bought, sold, or stored
-- Designed for learning and practice purposes
+> **Educational use only.** Chrysos does not execute real trades, hold funds, or provide financial advice. All balances and trades are simulated.
 
 ## Features
 
-- **Virtual Trading Simulation**: Practice trading with virtual money
-- Real-time cryptocurrency price tracking (for educational purposes)
-- Virtual portfolio management with P&L calculations
-- Social learning through collections
-- Leaderboards and rankings
-- Multi-language support (English/Vietnamese)
-- Dark theme UI
-- Comprehensive learning modules
+- Virtual trading with a starting USDT balance
+- Live cryptocurrency market data, charts, token search, and watchlists
+- Portfolio valuation, holdings, P&L, and transaction history
+- Buy and sell order flows with configurable order types
+- Leaderboards, achievements, and collection-based social learning
+- Learning modules and crypto news
+- Light and dark themes, plus English and Vietnamese localization
+- Offline-first local persistence with optional Supabase synchronization
+- QR-based collection invites and mobile camera support
 
-## Authentication Fix
+## Tech Stack
 
-### Issue
+- [Expo](https://expo.dev/) and React Native
+- Expo Router for file-based navigation
+- TypeScript
+- Redux Toolkit and Redux Persist
+- Supabase for optional cloud data synchronization
+- AsyncStorage and Expo SecureStore for local persistence
+- Sentry for optional production error tracking
 
-When users reset their account, the app would throw "User not authenticated" errors because the user state in Redux was cleared but not properly re-initialized.
-
-### Solution
-
-The app now includes automatic user re-initialization:
-
-1. **useDualBalance Hook**: Automatically detects when user authentication is lost and re-initializes user data
-2. **UserContext**: Added `reinitializeUser()` method to handle user data restoration
-3. **Error Handling**: Enhanced error handling in trading components to automatically retry operations after re-authentication
-4. **App Initialization**: Improved app startup to ensure user data is properly loaded
-
-### How It Works
-
-- When a "User not authenticated" error occurs, the system automatically:
-  1. Detects the authentication error
-  2. Attempts to re-initialize user data using the stored UUID
-  3. Fetches existing user data or creates a new user if needed
-  4. Retries the original operation
-
-### Usage
-
-The authentication fix is transparent to users. When they reset their account and try to trade, the app will automatically handle the re-authentication process.
-
-## Development
+## Getting Started
 
 ### Prerequisites
 
-- Node.js 18+
-- React Native development environment
-- Expo CLI
+- Node.js 20 or later
+- npm or Yarn 1.22+
+- Expo Go or an Android/iOS simulator for mobile development
 
 ### Installation
 
 ```bash
-npm install
-# or
+git clone https://github.com/<your-username>/chrysos.git
+cd chrysos
 yarn install
 ```
 
-### Running the App
+### Environment configuration
 
-```bash
-npx expo start
+Copy the following into a local `.env` file if you want to enable cloud synchronization and news. Never commit this file or production credentials.
+
+```env
+EXPO_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+EXPO_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+EXPO_PUBLIC_NEWS_API_KEY=your-news-api-key
+EXPO_PUBLIC_SENTRY_DSN=your-sentry-dsn
 ```
 
-### Environment Setup
+The app remains usable without Supabase credentials: it uses local storage and gracefully skips cloud operations. For production, keep privileged API keys on a server rather than in a client app.
 
-Make sure to configure your Supabase credentials in the appropriate configuration files.
+### Run the app
 
-## Architecture
+```bash
+# Start Expo and choose a device from the terminal
+yarn start
 
-The app uses:
+# Run the web version
+yarn web
 
-- **Redux Toolkit** for state management
-- **Supabase** for backend services
-- **React Native WebView** for charts
-- **Expo Router** for navigation
-- **TypeScript** for type safety
+# Run a native development build
+yarn android
+yarn ios
+```
+
+## Quality Checks
+
+```bash
+# Type-check the project
+npx tsc --noEmit
+
+# Run tests once
+yarn test:ci
+
+# Produce a static web build
+npx expo export --platform web
+```
+
+## Project Structure
+
+```text
+app/            Expo Router screens and navigation layouts
+components/     Reusable UI and feature components
+context/        Theme, language, and user providers
+features/       Redux slices and async actions
+services/       Market data, storage, sync, and application services
+database/       Supabase schema and migration scripts
+hooks/          Reusable data and UI hooks
+utils/          Formatting, configuration, and platform utilities
+assets/         Images, icons, and fonts
+```
+
+## Data and Privacy
+
+Chrysos stores simulated account and portfolio data locally. If Supabase is configured, selected application data can be synchronized to the configured project. Do not use real credentials, seed phrases, private keys, or financial account data in the app.
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+Contributions are welcome. Please create a branch, make focused changes, run the quality checks above, and open a pull request describing the change.
 
 ## License
 
-MIT License
+License details will be added before release.
