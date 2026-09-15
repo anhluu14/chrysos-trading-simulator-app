@@ -1,6 +1,8 @@
-# Crypto Trading Simulator
+# Chrysos
 
-A React Native application for **virtual cryptocurrency trading simulation** with real-time market data, portfolio management, and social learning features. **This app is for educational purposes only - no real money is involved.**
+**Chrysos** is a mobile cryptocurrency trading simulator built with Expo and React Native. It provides a risk-free space to explore market data, practise trades with virtual USDT, track a portfolio, and learn the fundamentals of crypto trading.
+
+The new browser workspace adds paper USD trading, a responsive desktop layout, and local portfolio persistence. **For educational use only; no real money is involved.**
 
 ## ⚠️ Important Notice
 
