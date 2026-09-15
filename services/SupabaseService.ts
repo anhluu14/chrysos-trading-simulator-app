@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
 import NetInfo from "@react-native-community/netinfo";
+import { Platform } from "react-native";
 import UUIDService from "./UUIDService";
 import { AsyncStorageService } from "./AsyncStorageService";
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
@@ -100,9 +101,11 @@ class SupabaseConfig {
   }
 }
 
-const initializeSupabase = (): SupabaseClient => {
+const initializeSupabase = (): SupabaseClient | null => {
   try {
     const config = SupabaseConfig.getConfig();
+    const isServerRender =
+      Platform.OS === "web" && typeof window === "undefined";
 
     logger.info("Initializing Supabase", "SupabaseService", {
       url: config.url,
@@ -111,13 +114,17 @@ const initializeSupabase = (): SupabaseClient => {
 
     const supabase = createClient(config.url, config.key, {
       auth: {
-        storage: typeof window !== "undefined" ? AsyncStorage : {
-          getItem: () => Promise.resolve(null),
-          setItem: () => Promise.resolve(),
-          removeItem: () => Promise.resolve(),
-        },
-        autoRefreshToken: true,
-        persistSession: true,
+        // Expo Router renders web routes on the server first, where neither
+        // localStorage nor React Native AsyncStorage is available. Deferring
+        // session persistence there prevents the web bundle from crashing.
+        ...(isServerRender
+          ? { autoRefreshToken: false, persistSession: false }
+          : {
+              storage:
+                Platform.OS === "web" ? window.localStorage : AsyncStorage,
+              autoRefreshToken: true,
+              persistSession: true,
+            }),
         detectSessionInUrl: false,
       },
       global: {
@@ -142,10 +149,7 @@ const initializeSupabase = (): SupabaseClient => {
       "SupabaseService",
       error
     );
-    // Keep a usable client shape while offline. This lets the app's existing
-    // network error handling and local-first storage paths run instead of
-    // crashing at every call site when credentials have not been configured.
-    return createClient("https://offline.supabase.invalid", "offline-anon-key");
+    return null;
   }
 };
 
@@ -298,10 +302,7 @@ export class SyncService {
     baseDelay: 1000,
     maxDelay: 10000,
   };
-  private static portfolioSyncTimeouts: Map<
-    string,
-    ReturnType<typeof setTimeout>
-  > = new Map();
+  private static portfolioSyncTimeouts: Map<string, NodeJS.Timeout> = new Map();
   private static portfolioSyncCooldowns: Map<string, number> = new Map();
   private static readonly PORTFOLIO_SYNC_DEBOUNCE_MS = 5000;
   private static readonly PORTFOLIO_SYNC_COOLDOWN_MS = 10000;

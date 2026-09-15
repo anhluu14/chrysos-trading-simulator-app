@@ -1,0 +1,6 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "skipLibCheck": true },
+  "include": ["features/paper/**/*.ts", "components/paper/**/*.tsx", "components/paper/**/*.ts", "app/_layout.web.tsx"],
+  "exclude": ["node_modules"]
+}

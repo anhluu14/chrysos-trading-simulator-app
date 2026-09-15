@@ -1,6 +1,6 @@
 import * as Crypto from 'expo-crypto';
+import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import secureStorage from '@/utils/secureStorage';
 import { AsyncStorageService } from './AsyncStorageService';
 import { supabase } from './SupabaseService';
 
@@ -47,7 +47,7 @@ export class HybridStorageService {
 
   // Critical data -> SecureStore (UUID, auth tokens)
   static async setSecure(key: string, value: string): Promise<void> {
-    return await secureStorage.setItem(key, value);
+    return await SecureStore.setItemAsync(key, value);
   }
 
   // User preferences -> AsyncStorage
@@ -62,13 +62,10 @@ export class HybridStorageService {
     // Save locally first for immediate UI updates
     await AsyncStorageService.addTransaction({
       ...transaction,
-      id: Crypto.randomUUID(),
-      fee: transaction.fee ?? "0",
-      order_type: transaction.order_type ?? "MARKET",
-      status: transaction.status ?? "COMPLETED",
       timestamp:
-        transaction.timestamp || new Date().toISOString(),
-      created_at: new Date().toISOString(),
+        typeof transaction.timestamp === "string"
+          ? Date.parse(transaction.timestamp)
+          : transaction.timestamp || Date.now(),
     });
 
     // Queue for cloud sync
@@ -162,12 +159,10 @@ export class HybridStorageService {
       const transactionData = item.data as CreateTransactionParams;
       await AsyncStorageService.addTransaction({
         ...transactionData,
-        id: Crypto.randomUUID(),
-        fee: transactionData.fee ?? "0",
-        order_type: transactionData.order_type ?? "MARKET",
-        status: transactionData.status ?? "COMPLETED",
-        timestamp: transactionData.timestamp || new Date().toISOString(),
-        created_at: new Date().toISOString(),
+        timestamp:
+          typeof transactionData.timestamp === "string"
+            ? Date.parse(transactionData.timestamp)
+            : transactionData.timestamp || Date.now(),
       });
     } else if (item.type === "user") {
       const userData = item.data as CreateUserParams;
@@ -177,12 +172,8 @@ export class HybridStorageService {
         username: userData.username,
         usdt_balance: userData.usdt_balance || "100000",
         total_portfolio_value: userData.total_portfolio_value || "100000",
-        initial_balance: "100000",
         total_pnl: "0.00",
-        total_pnl_percentage: "0.00",
         total_trades: 0,
-        total_buy_volume: "0.00",
-        total_sell_volume: "0.00",
         win_rate: "0.00",
         join_date: now,
         last_active: now,

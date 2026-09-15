@@ -15,7 +15,7 @@ if (envExists) {
   console.log("📝 Creating .env file...");
 
   const envContent = `# Crypto News API Configuration
-NEWS_API_KEY=0b2bddf9eef5407eb519f8b389b06c38
+NEWS_API_KEY=your_news_api_key_here
 
 # Other API keys can be added here
 # COIN_GECKO_API_KEY=your_coin_gecko_key_here
@@ -51,7 +51,7 @@ if (gitignoreExists) {
 
 console.log("\n🎉 Environment setup completed!");
 console.log("\n📋 Next steps:");
-console.log("1. The API key is now stored securely in the app");
+console.log("1. Replace the placeholder in .env with your own API key");
 console.log("2. The .env file is ignored by git for security");
 console.log("3. The app will use SecureStore for sensitive data");
 console.log("4. You can update API keys in the .env file as needed");

@@ -104,7 +104,7 @@ class AchievementService {
       if (error) throw error;
       return data || [];
     } catch (error) {
-      logger.error('Error fetching achievements', 'AchievementService', error);
+      logger.error('Error fetching achievements:', error);
       return [];
     }
   }
@@ -124,7 +124,7 @@ class AchievementService {
       if (error) throw error;
       return data || [];
     } catch (error) {
-      logger.error('Error fetching user achievements', 'AchievementService', error);
+      logger.error('Error fetching user achievements:', error);
       return [];
     }
   }
@@ -142,7 +142,7 @@ class AchievementService {
       if (error) throw error;
       return data || [];
     } catch (error) {
-      logger.error('Error fetching daily challenges', 'AchievementService', error);
+      logger.error('Error fetching daily challenges:', error);
       return [];
     }
   }
@@ -162,7 +162,7 @@ class AchievementService {
       if (error) throw error;
       return data || [];
     } catch (error) {
-      logger.error('Error fetching user daily challenges', 'AchievementService', error);
+      logger.error('Error fetching user daily challenges:', error);
       return [];
     }
   }
@@ -186,7 +186,7 @@ class AchievementService {
           }, { onConflict: 'user_id,achievement_id' });
       }
     } catch (error) {
-      logger.error('Error initializing user achievements', 'AchievementService', error);
+      logger.error('Error initializing user achievements:', error);
     }
   }
 
@@ -270,7 +270,7 @@ class AchievementService {
         achievement: isNewlyCompleted ? achievement : undefined
       };
     } catch (error) {
-      logger.error('Error updating achievement progress', 'AchievementService', error);
+      logger.error('Error updating achievement progress:', error);
       return { unlocked: false };
     }
   }
@@ -323,7 +323,7 @@ class AchievementService {
 
       return true;
     } catch (error) {
-      logger.error('Error claiming achievement reward', 'AchievementService', error);
+      logger.error('Error claiming achievement reward:', error);
       return false;
     }
   }
@@ -348,7 +348,7 @@ class AchievementService {
         .update({ usdt_balance: newBalance.toString() })
         .eq('id', userId);
     } catch (error) {
-      logger.error('Error adding virtual money reward', 'AchievementService', error);
+      logger.error('Error adding virtual money reward:', error);
       throw error;
     }
   }
@@ -370,7 +370,7 @@ class AchievementService {
           message
         });
     } catch (error) {
-      logger.error('Error creating achievement notification', 'AchievementService', error);
+      logger.error('Error creating achievement notification:', error);
     }
   }
 
@@ -390,7 +390,7 @@ class AchievementService {
       if (error) throw error;
       return data || [];
     } catch (error) {
-      logger.error('Error fetching user notifications', 'AchievementService', error);
+      logger.error('Error fetching user notifications:', error);
       return [];
     }
   }
@@ -406,7 +406,7 @@ class AchievementService {
         })
         .eq('id', notificationId);
     } catch (error) {
-      logger.error('Error marking notification as read', 'AchievementService', error);
+      logger.error('Error marking notification as read:', error);
     }
   }
 
@@ -454,7 +454,7 @@ class AchievementService {
         await this.updateAchievementProgress(userId, 'first_trade', tradeData.totalTrades);
       }
     } catch (error) {
-      logger.error('Error checking trading achievements', 'AchievementService', error);
+      logger.error('Error checking trading achievements:', error);
     }
   }
 }

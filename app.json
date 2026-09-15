@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Chrysos",
-    "slug": "chrysos",
+    "name": "Trade Coin Skills",
+    "slug": "trading-simulation-app",
     "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -14,7 +14,7 @@
     "description": "Master cryptocurrency trading skills with virtual money in a completely risk-free simulation environment. Practice trading strategies, track portfolio performance, and compete with other traders - all without using real money. Perfect for beginners developing essential crypto trading skills.",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.dustindoan.chrysos",
+      "bundleIdentifier": "com.anhluu14.tradecoinskills",
       "buildNumber": "4",
       "version": "1.0.2",
       "icon": "./assets/images/rocket.png",
@@ -29,7 +29,7 @@
         "foregroundImage": "./assets/images/rocket.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.dustindoan.chrysos",
+      "package": "com.anhluu14.tradecoinskills",
       "permissions": [
         "CAMERA",
         "RECORD_AUDIO",
@@ -86,23 +86,14 @@
       "typedRoutes": true,
       "reactCompiler": true
     },
-    "updates": {
-      "enabled": true,
-      "checkAutomatically": "ON_LOAD",
-      "fallbackToCacheTimeout": 30000,
-      "url": "https://u.expo.dev/ff964db9-1fa1-4563-98c5-478459b0c294"
-    },
     "extra": {
-      "SECURE_STORE_PREFIX": "chrysos_",
+      "SECURE_STORE_PREFIX": "tradecoinskills_",
       "router": {},
-      "eas": {
-        "projectId": "ff964db9-1fa1-4563-98c5-478459b0c294"
-      },
       "ENVIRONMENT": "production",
+      "EXPO_PUBLIC_NEWS_API_KEY": "",
       "EXPO_PUBLIC_SUPABASE_URL": "https://qmiafrudmawctuazhluz.supabase.co",
       "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtaWFmcnVkbWF3Y3R1YXpobHV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ0MDMzMTksImV4cCI6MjA2OTk3OTMxOX0.Oii5ylUbfJWe5OhLzZjMG0zBLUrrs2CRrtXhwTTCkVk",
       "EXPO_PUBLIC_SENTRY_DSN": ""
-    },
-    "owner": "dustindoan"
+    }
   }
 }

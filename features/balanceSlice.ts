@@ -304,9 +304,7 @@ export const balanceSlice = createSlice({
 
       const usdtBalance = state.balance.usdtBalance;
       const totalPortfolioValue = state.balance.totalPortfolioValue;
-      const holdingsCopy = JSON.parse(
-        JSON.stringify(state.balance.holdings)
-      ) as Record<string, Holding>;
+      const holdingsCopy = JSON.parse(JSON.stringify(state.balance.holdings));
 
       UUIDService.getOrCreateUser().then((uuid) => {
         let totalPnL = 0;

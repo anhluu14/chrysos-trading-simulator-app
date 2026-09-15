@@ -23,7 +23,7 @@ function getSentryDSN(): string | undefined {
  */
 function getEnvironment(): string {
   const extra = Constants.expoConfig?.extra || {};
-  return extra.ENVIRONMENT || process.env.ENVIRONMENT || (__DEV__ ? "development" : "production");
+  return extra.ENVIRONMENT || process.env.ENVIRONMENT || __DEV__ ? "development" : "production";
 }
 
 /**
@@ -35,7 +35,7 @@ function getRelease(): string {
     ios: Constants.expoConfig?.ios?.buildNumber || "1",
     android: Constants.expoConfig?.android?.versionCode?.toString() || "1",
   });
-  return `${Constants.expoConfig?.slug || "chrysos"}@${appVersion}+${buildNumber}`;
+  return `${Constants.expoConfig?.slug || "trading-simulation-app"}@${appVersion}+${buildNumber}`;
 }
 
 /**
@@ -68,7 +68,7 @@ export function initSentry(): void {
       // Configure what to capture
       attachStacktrace: true,
       enableNativeCrashHandling: true,
-      enableAutoPerformanceTracing: false, // Disable performance monitoring for now
+      enableAutoPerformanceInstrumentation: false, // Disable performance monitoring for now
       
       // Filter out common non-critical errors
       ignoreErrors: [

@@ -1,5 +1,6 @@
+import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import secureStorage from '@/utils/secureStorage';
+import { Platform } from 'react-native';
 import { AsyncStorageService } from './AsyncStorageService';
 import { DEFAULT_BALANCE_STRING, DEFAULT_USER } from '@/utils/constant';
 import { getDeviceUUID } from '@/utils/deviceUtils';
@@ -14,9 +15,34 @@ const USER_UUID_KEY = "user_uuid_13";
 const USER_PROFILE_KEY = "user_profile";
 const SYNC_STATUS_KEY = "sync_status";
 
+const uuidStorage = {
+  getItemAsync: (key: string) => {
+    if (Platform.OS === "web") {
+      return Promise.resolve(
+        typeof window === "undefined" ? null : window.localStorage.getItem(key)
+      );
+    }
+    return SecureStore.getItemAsync(key);
+  },
+  setItemAsync: (key: string, value: string) => {
+    if (Platform.OS === "web") {
+      if (typeof window !== "undefined") window.localStorage.setItem(key, value);
+      return Promise.resolve();
+    }
+    return SecureStore.setItemAsync(key, value);
+  },
+  deleteItemAsync: (key: string) => {
+    if (Platform.OS === "web") {
+      if (typeof window !== "undefined") window.localStorage.removeItem(key);
+      return Promise.resolve();
+    }
+    return SecureStore.deleteItemAsync(key);
+  },
+};
+
 class UUIDService {
   static async getOrCreateUser() {
-    let uuid = await secureStorage.getItem(USER_UUID_KEY);
+    let uuid = await uuidStorage.getItemAsync(USER_UUID_KEY);
     logger.info("Fetching or creating user UUID", "UUIDService", {
       uuid: uuid ? "exists" : "new",
     });
@@ -28,7 +54,7 @@ class UUIDService {
         "UUIDService",
         { invalidUuid: uuid }
       );
-      await secureStorage.deleteItem(USER_UUID_KEY);
+      await uuidStorage.deleteItemAsync(USER_UUID_KEY);
       await AsyncStorage.removeItem(USER_PROFILE_KEY);
       uuid = null;
     }
@@ -44,7 +70,7 @@ class UUIDService {
         throw new Error("Failed to generate valid UUID format");
       }
 
-      await secureStorage.setItem(USER_UUID_KEY, uuid);
+      await uuidStorage.setItemAsync(USER_UUID_KEY, uuid);
 
       // Initialize local user profile only (no cloud sync here)
       const now = new Date().toISOString();

@@ -3,7 +3,7 @@ module.exports = config => ({
   type: "widget",
   icon: 'https://github.com/expo.png',
   entitlements: {
-    "com.apple.security.application-groups": ["group.com.dustin-widget.shared"],
+    "com.apple.security.application-groups": ["group.com.anhluu14.tradecoinskills.widget"],
   },
   frameworks: ["SwiftUI", "ActivityKit"],
   backgroundColor: "blue",

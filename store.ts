@@ -9,12 +9,26 @@ import { combineReducers } from 'redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { persistReducer, persistStore } from 'redux-persist';
 import { useDispatch, useSelector } from 'react-redux';
+import { Platform } from 'react-native';
 
 import type { TypedUseSelectorHook } from "react-redux";
 
+const serverStorage = {
+  getItem: async (_key: string) => null,
+  setItem: async (_key: string, _value: string) => undefined,
+  removeItem: async (_key: string) => undefined,
+};
+
+// Expo Router evaluates the store while rendering web routes on the server.
+// Native AsyncStorage needs `window`, so keep persistence client-only there.
+const persistStorage =
+  Platform.OS === 'web' && typeof window === 'undefined'
+    ? serverStorage
+    : storage;
+
 const persistConfig = {
   key: "root",
-  storage,
+  storage: persistStorage,
   whitelist: [
     "favorites",
     "searchHistory",

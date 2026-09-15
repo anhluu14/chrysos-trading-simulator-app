@@ -1,5 +1,5 @@
 {
-  "name": "chrysos",
+  "name": "trade-coin-skills",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
@@ -20,6 +20,8 @@
     "build:analyze": "NODE_ENV=production expo export --platform web",
     "test": "jest --watchAll",
     "test:ci": "jest --ci --runInBand --coverage",
+    "test:paper": "node --test scripts/test-paper.cjs",
+    "typecheck:paper": "tsc --noEmit -p tsconfig.paper.json",
     "update:staging": "eas update --branch main --message \"Staging update\"",
     "update:production": "eas update --branch production --message \"Production update\"",
     "publish:staging": "eas update --channel staging --message \"Staging update: $(git log -1 --pretty=format:'%s')\"",

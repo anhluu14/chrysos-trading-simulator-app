@@ -1,8 +1,12 @@
 import * as Application from 'expo-application';
 import { Platform } from 'react-native';
+import * as Crypto from 'expo-crypto';
 
 
 export const getDeviceUUID = async (): Promise<string> => {
+  // Browsers have no Android device ID. Persist this installation ID in
+  // UUIDService instead of assigning every browser the same fallback ID.
+  if (Platform.OS === 'web') return Crypto.randomUUID();
   let deviceId: string;
   
   if (Platform.OS === 'ios') {
@@ -33,4 +37,4 @@ export const getDeviceUUID = async (): Promise<string> => {
   ].join('-');
   
   return uuid;
-}; 
+};

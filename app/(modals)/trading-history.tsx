@@ -23,7 +23,6 @@ import {
   Text,
   TouchableOpacity,
   View,
-  ColorValue,
 } from "react-native";
 
 const TradingHistoryModal = () => {
@@ -198,7 +197,7 @@ const TradingHistoryModal = () => {
   };
 
   const TradeItem = ({ trade }: { trade: Transaction }) => {
-    const gradientColors: readonly [ColorValue, ColorValue] =
+    const gradientColors =
       theme === "dark"
         ? [colors.background.card, colors.background.cardSecondary]
         : [colors.background.card, colors.background.card];
@@ -517,7 +516,7 @@ const TradingHistoryModal = () => {
     value: "all" | "buy" | "sell";
     isActive: boolean;
   }) => {
-    const gradientColors: readonly [ColorValue, ColorValue] = isActive
+    const gradientColors = isActive
       ? [colors.action.accent, colors.action.accent]
       : theme === "dark"
       ? [colors.background.card, colors.background.cardSecondary]
@@ -588,7 +587,7 @@ const TradingHistoryModal = () => {
     value: "all" | "1d" | "1w" | "1m" | "3m" | "1y";
     isActive: boolean;
   }) => {
-    const gradientColors: readonly [ColorValue, ColorValue] = isActive
+    const gradientColors = isActive
       ? [colors.action.accent, colors.action.accent]
       : theme === "dark"
       ? [colors.background.card, colors.background.cardSecondary]

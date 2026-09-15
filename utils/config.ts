@@ -1,6 +1,7 @@
+import * as SecureStore from "expo-secure-store";
 import Constants from "expo-constants";
+import { Platform } from "react-native";
 import { logger } from "./logger";
-import secureStorage from "./secureStorage";
 
 // Configuration interface
 interface AppConfig {
@@ -133,9 +134,10 @@ class ConfigService {
    * Load sensitive configuration from SecureStore
    */
   private async loadFromSecureStore(): Promise<void> {
+    if (Platform.OS === "web") return;
     try {
       // Load API keys from SecureStore
-      const newsApiKey = await secureStorage.getItem(
+      const newsApiKey = await SecureStore.getItemAsync(
         SECURE_KEYS.NEWS_API_KEY
       );
       if (newsApiKey) {
@@ -143,14 +145,14 @@ class ConfigService {
         logger.info("Loaded NEWS_API_KEY from SecureStore", "ConfigService");
       }
 
-      const supabaseUrl = await secureStorage.getItem(
+      const supabaseUrl = await SecureStore.getItemAsync(
         SECURE_KEYS.SUPABASE_URL
       );
       if (supabaseUrl) {
         this.config.SUPABASE_URL = supabaseUrl;
       }
 
-      const supabaseKey = await secureStorage.getItem(
+      const supabaseKey = await SecureStore.getItemAsync(
         SECURE_KEYS.SUPABASE_ANON_KEY
       );
       if (supabaseKey) {
@@ -202,11 +204,11 @@ class ConfigService {
 
     // Store sensitive data in SecureStore
     if (key === "NEWS_API_KEY") {
-      await secureStorage.setItem(SECURE_KEYS.NEWS_API_KEY, value as string);
+      await SecureStore.setItemAsync(SECURE_KEYS.NEWS_API_KEY, value as string);
     } else if (key === "SUPABASE_URL") {
-      await secureStorage.setItem(SECURE_KEYS.SUPABASE_URL, value as string);
+      await SecureStore.setItemAsync(SECURE_KEYS.SUPABASE_URL, value as string);
     } else if (key === "SUPABASE_ANON_KEY") {
-      await secureStorage.setItem(
+      await SecureStore.setItemAsync(
         SECURE_KEYS.SUPABASE_ANON_KEY,
         value as string
       );
@@ -278,9 +280,9 @@ class ConfigService {
    */
   async clear(): Promise<void> {
     try {
-      await secureStorage.deleteItem(SECURE_KEYS.NEWS_API_KEY);
-      await secureStorage.deleteItem(SECURE_KEYS.SUPABASE_URL);
-      await secureStorage.deleteItem(SECURE_KEYS.SUPABASE_ANON_KEY);
+      await SecureStore.deleteItemAsync(SECURE_KEYS.NEWS_API_KEY);
+      await SecureStore.deleteItemAsync(SECURE_KEYS.SUPABASE_URL);
+      await SecureStore.deleteItemAsync(SECURE_KEYS.SUPABASE_ANON_KEY);
 
       this.config = { ...DEFAULT_CONFIG };
       this.isInitialized = false;
