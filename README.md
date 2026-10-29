@@ -111,6 +111,10 @@ The app uses:
 - **Expo Router** for navigation
 - **TypeScript** for type safety
 
+## Contributors
+
+- [Haden Nguyen](https://github.com/hnguyenhuu ) — contributor
+
 ## Contributing
 
 1. Fork the repository
